@@ -2,6 +2,7 @@
   const express = require('express');
   const handlebars = require('express-handlebars');
   const app = express();
+  const admin = require('./routes/admin');
   // const mongoose = require('mongoose')
 
   
@@ -18,9 +19,10 @@
   
 
 // Rotas
+  app.use('/admin', admin)
 
 // Outros
-const PORT = 3333;
-app.listen(PORT, () => {
-  console.log('Connected')
-})
+  const PORT = 3333;
+  app.listen(PORT, () => {
+    console.log('Connected')
+  })
