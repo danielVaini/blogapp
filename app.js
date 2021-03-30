@@ -23,7 +23,10 @@
     // Midlleware
       app.use((req, res, next) => {
         // Permite criar variiáveis globais
-        res.locals.
+        res.locals.success_msg = req.flash("success_msg");
+        res.locals.error_msg = req.flash("error_msg");
+
+        next();
       } )
     // Body-parser
       app.use(express.urlencoded({extended: true}))
