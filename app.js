@@ -3,11 +3,28 @@
   const handlebars = require('express-handlebars');
   const app = express();
   const admin = require('./routes/admin');
-  const path = require('path')
-  const mongoose = require('mongoose')
+  const path = require('path');
+  const mongoose = require('mongoose');
+  const session = require('express-session');
+  const flash = require('connect-flash');
 
   
   // Configuração
+    // Session
+      app.use(session({
+        secret: "cursodenode",// Chave para gerar uma sessão para nós
+        resave: true,
+        saveUninitialized: true,
+
+      }))
+
+      app.use(flash());
+    
+    // Midlleware
+      app.use((req, res, next) => {
+        // Permite criar variiáveis globais
+        res.locals.
+      } )
     // Body-parser
       app.use(express.urlencoded({extended: true}))
       app.use(express.json())
