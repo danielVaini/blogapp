@@ -9,11 +9,17 @@ router.get('/', (req, res) => {
 })
 
 router.get('/posts', (req, res) => {
-  res.send('Post page')
+ 
+  
 })
 
 router.get('/categorias', (req, res) => {
-  res.render('admin/categorias')
+  Categoria.find().lean().sort({date: 'desc'}).then((categorias) => {
+    res.render('admin/categorias', {categoria: categorias})
+  }).catch((error) => {
+    req.flash("error_msg", "Houve um erro ao listar as categorias")
+    res.redirect("/admin")
+  })
 })
 
 router.get('/categorias/add', (req, res) => {
@@ -21,16 +27,41 @@ router.get('/categorias/add', (req, res) => {
 })
 
 router.post('/categorias/nova', (req, res) => {
-  const novaCategoria = {
-    nome: req.body.nome,
-    slug: req.body.slug
-  }
 
-  new Categoria(novaCategoria).save().then(() => {
-    console.log("Save category with sucess")
-  }).catch((err) => {
-    console.log("Erro ao salvar categoria:" + err)
-  })
+  const errors = [];
+
+  // Campo nome vázio ou inválido
+
+    if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
+      errors.push({texto: 'Nome inválido'})
+    }
+  // Campo slug vázio ou inválido
+    if(!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null){
+      errors.push({texto: 'Slug inválido'})
+    }
+  // campo slug < 2
+    if(req.body.slug.length < 2 || req.body.nome.length < 2) {
+      errors.push({texto: 'Nome slug muito pequeno'})
+    }
+
+  // Error
+    if(errors.length > 0) {
+      res.render('admin/addcategorias', {error: errors});
+    }else {
+
+      const novaCategoria = {
+        nome: req.body.nome,
+        slug: req.body.slug
+      }
+    
+      new Categoria(novaCategoria).save().then(() => {
+        req.flash('success_msg', 'Categoria criada com sucesso')
+        res.redirect('/admin/categorias')
+      }).catch((err) => {
+        req.flash('error_msg', 'Houve um erro ao salvar a categoria, tente novamente')
+        res.redirect('/admin')
+      })
+    }
 })
 
 
