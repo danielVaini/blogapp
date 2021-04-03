@@ -162,4 +162,33 @@ router.post('/postagens/nova', (req, res) => {
     })
   }
 })
+
+router.get('/postagens/edit/:id', (req, res) => {
+
+  Postagem.findOne({_id: req.params.id}).lean().then((postagem) => {
+    Categoria.find().lean().then((categoria) => {
+      res.render('admin/editpostagens', {categorias: categoria, postagem: postagem})
+      
+    }).catch((err) => {
+      req.flash('error_msg', 'Houve um erro ao lista as categorias')
+      res.redirect('/admin/postagens')
+    })
+  }).catch((err) => {
+    req.flash('error_msg', 'Houve um erro ao executar a editação')
+    res.redirect('/admin/postagens')
+  })
+
+
+})
+
+router.post('/postagem/edit', (req, res) => {
+
+  Postagem.findOne({_id: req.body.id}).lean().then((postagem) => {
+    postagem.titulo = req.body.titulo
+  }).catch((err) => {
+    req.flash('error_msg', 'Houve um erro ao salvar a edição')
+    res.redirect('/admin/postagens')
+  })
+
+})
 module.exports = router;
