@@ -1,0 +1,27 @@
+<div class="card">
+  <div class="card-body">
+    <h1 class="display-4">Welcome to the node blog</h1>
+    <p class="lead">It's very funny</p>
+    <hr class="my-4">
+    <p>Nice, very very nice!</p>
+    <p class="lead">
+      <a href="#" class="btn btn-primary btn-lg">
+        Sign up
+      </a>
+    </p>
+  </div>
+</div>
+
+<hr>
+<h2>Postagens recentes</h2>
+
+{{#each postagens}}
+<div class="card">
+  <div class="card-body">
+    <h3>{{titulo}}</h3>
+    <p>{{conteudo}}</p>
+  </div>
+</div>
+{{else}}
+  <h5>Nenhuma postagem</h5>
+{{/each}}
