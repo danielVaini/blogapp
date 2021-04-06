@@ -7,6 +7,7 @@
   const mongoose = require('mongoose');
   const session = require('express-session');
   const flash = require('connect-flash');
+  const usuarios = require('./routes/usuario');
   // models
     require('./models/Postagem');
     const Postagem = mongoose.model('postagens')
@@ -111,7 +112,7 @@
 
 
   app.use('/admin', admin)
-
+  app.use('/usuarios', usuarios)
 // Outros
   const PORT = 3333;
   app.listen(PORT, () => {
