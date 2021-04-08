@@ -8,6 +8,8 @@
   const session = require('express-session');
   const flash = require('connect-flash');
   const usuarios = require('./routes/usuario');
+  const passport = require('passport');
+  require('./config/auth')(passport)
   // models
     require('./models/Postagem');
     const Postagem = mongoose.model('postagens')
@@ -23,6 +25,9 @@
 
       }))
 
+      app.use(passport.initialize())
+      app.use(passport.session())
+
       app.use(flash());
     
     // Midlleware
@@ -30,6 +35,7 @@
         // Permite criar variiáveis globais
         res.locals.success_msg = req.flash("success_msg");
         res.locals.error_msg = req.flash("error_msg");
+        res.locals.error = req.flash('error')
 
         next();
       } )
