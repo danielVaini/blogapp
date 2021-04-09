@@ -35,7 +35,8 @@
         // Permite criar variiáveis globais
         res.locals.success_msg = req.flash("success_msg");
         res.locals.error_msg = req.flash("error_msg");
-        res.locals.error = req.flash('error')
+        res.locals.error = req.flash('error');
+        res.locals.user = req.user || null; // req.user é criado automaticamente pelo passport
 
         next();
       } )
